@@ -138,7 +138,7 @@ class Engine(EngineBase):
             context, zmq.DEALER, self.port_args.rpc_ipc_name, True
         )
 
-    async def _async_update_weights_from_tensor(
+    async def async_update_weights_from_tensor(
         self,
         named_tensors: List[Tuple[str, torch.Tensor]],
         load_format: Optional[str] = None,
