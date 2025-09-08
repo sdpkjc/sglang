@@ -138,6 +138,24 @@ class Engine(EngineBase):
             context, zmq.DEALER, self.port_args.rpc_ipc_name, True
         )
 
+    async def _async_update_weights_from_tensor(
+        self,
+        named_tensors: List[Tuple[str, torch.Tensor]],
+        load_format: Optional[str] = None,
+        flush_cache: bool = True,
+    ):
+        """Update weights from distributed source. If there are going to be more updates, set `flush_cache` to be true
+        to avoid duplicated operations such as clearing cache."""
+        obj = UpdateWeightsFromTensorReqInput(
+            serialized_named_tensors=[
+                MultiprocessingSerializer.serialize(named_tensors)
+                for _ in range(self.server_args.tp_size)
+            ],
+            load_format=load_format,
+            flush_cache=flush_cache,
+        )
+        return await self.tokenizer_manager.update_weights_from_tensor(obj, None)
+    
     def generate(
         self,
         # The input prompt. It can be a single prompt or a batch of prompts.
