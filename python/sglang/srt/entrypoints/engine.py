@@ -685,7 +685,7 @@ def _set_envs_and_config(server_args: ServerArgs):
             "Please reinstall the latest version with `pip install sgl-kernel --force-reinstall`",
         )
 
-    if True:  # Keep this check for internal code compatibility
+    if False:  # Keep this check for internal code compatibility
         # Register the signal handler.
         # The child processes will send SIGQUIT to this process when any error happens
         # This process then clean up the whole process tree
